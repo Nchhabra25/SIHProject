@@ -1,0 +1,65 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: sih-postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: userdb
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin -d userdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  user-service:
+    build:
+      context: ./backend/user-service
+    container_name: user-service
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/userdb
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "false"
+    ports:
+      - "8082:8082"
+
+  auth-service:
+    build:
+      context: ./backend/auth-service
+    container_name: auth-service
+    depends_on:
+      - user-service
+    environment:
+      SERVER_PORT: 8081
+      USER_SERVICE_URL: http://user-service:8082
+      JWT_SECRET: "this_is_a_demo_secret_that_is_long_enough_for_hs512_please_change"
+      JWT_EXPIRATION: 86400000
+      SPRING_APPLICATION_JSON: '{"user":{"service":{"url":"http://user-service:8082"}},"jwt":{"secret":"this_is_a_demo_secret_that_is_long_enough_for_hs512_please_change","expiration":86400000}}'
+    ports:
+      - "8081:8081"
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    depends_on:
+      - auth-service
+    environment:
+      - VITE_API_URL=http://auth-service:8081
+      - VITE_USER_API_URL=http://user-service:8082
+    ports:
+      - "5173:80"
+
+volumes:
+  pgdata:

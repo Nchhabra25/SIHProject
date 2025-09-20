@@ -1,0 +1,160 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Eco-themed light mode palette */
+    --background: 120 20% 98%;
+    --foreground: 120 15% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 120 15% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 120 15% 15%;
+
+    /* Forest green primary */
+    --primary: 120 60% 25%;
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 120 50% 35%;
+
+    /* Soft sage secondary */
+    --secondary: 120 20% 88%;
+    --secondary-foreground: 120 15% 15%;
+
+    /* Earth muted tones */
+    --muted: 120 15% 92%;
+    --muted-foreground: 120 10% 45%;
+
+    /* Sky blue accent */
+    --accent: 200 80% 60%;
+    --accent-foreground: 0 0% 98%;
+    --accent-soft: 200 60% 85%;
+
+    /* Warm amber success */
+    --success: 45 90% 55%;
+    --success-foreground: 45 20% 15%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 120 15% 85%;
+    --input: 120 10% 95%;
+    --ring: 120 60% 25%;
+
+    /* Add Inter font family */
+    --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+    
+    --radius: 0.75rem;
+
+    /* Eco-themed gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--secondary)) 100%);
+    --gradient-success: linear-gradient(120deg, hsl(var(--success)) 0%, hsl(var(--primary-glow)) 100%);
+    
+    /* Glassmorphism effects */
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+
+  .dark {
+    /* Eco-dark mode palette */
+    --background: 120 15% 8%;
+    --foreground: 120 10% 90%;
+
+    --card: 120 10% 12%;
+    --card-foreground: 120 10% 90%;
+
+    --popover: 120 10% 12%;
+    --popover-foreground: 120 10% 90%;
+
+    /* Bright eco-green for dark mode */
+    --primary: 120 70% 45%;
+    --primary-foreground: 120 15% 8%;
+    --primary-glow: 120 60% 55%;
+
+    /* Dark sage secondary */
+    --secondary: 120 10% 18%;
+    --secondary-foreground: 120 10% 90%;
+
+    /* Dark earth tones */
+    --muted: 120 8% 20%;
+    --muted-foreground: 120 8% 65%;
+
+    /* Bright blue accent for dark */
+    --accent: 200 90% 70%;
+    --accent-foreground: 120 15% 8%;
+    --accent-soft: 200 50% 25%;
+
+    /* Golden amber for dark mode */
+    --success: 45 100% 65%;
+    --success-foreground: 45 20% 15%;
+
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 120 8% 25%;
+    --input: 120 8% 20%;
+    --ring: 120 70% 45%;
+
+    /* Dark mode gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--secondary)) 100%);
+    --gradient-success: linear-gradient(120deg, hsl(var(--success)) 0%, hsl(var(--primary-glow)) 100%);
+    
+    /* Dark glassmorphism */
+    --glass-bg: rgba(0, 0, 0, 0.2);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-inter);
+  }
+}
+
+@layer components {
+  /* Glassmorphism utility */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+  
+  /* Gradient backgrounds */
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
+  
+  .bg-gradient-card {
+    background: var(--gradient-card);
+  }
+  
+  .bg-gradient-success {
+    background: var(--gradient-success);
+  }
+  
+  /* Eco-button animations */
+  .eco-hover {
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-lg;
+  }
+  
+  /* Badge glow effect */
+  .badge-glow {
+    box-shadow: 0 0 20px hsl(var(--success) / 0.5);
+  }
+}
